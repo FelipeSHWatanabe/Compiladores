@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class analiseLexica {
-	 private static final String PADRAO_IDENTIFICADOR = "[a-zA-Z_][a-zA-Z0-9_]*";
+	 	private static final String PADRAO_IDENTIFICADOR = "[a-zA-Z_][a-zA-Z0-9_]*";
 	    private static final String PADRAO_NUMERO = "\\d+(\\.\\d+)?";
 	    private static final String PADRAO_STRING = "\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\""; // Strings entre aspas
 	    private static final String PADRAO_COMENTARIO_LINHA = "//[^\n]*"; // Comentários de linha
@@ -33,17 +33,38 @@ public class analiseLexica {
 	                PADRAO_OPERADOR_COMPARACAO + "|" +
 	                PADRAO_OPERADOR + "|" +
 	                PADRAO_PONTUACAO + "|" +
-	                PADRAO_PALAVRA_CHAVE);
+	                PADRAO_PALAVRA_CHAVE );
 	        Matcher matcher = pattern.matcher(codigoFonte);
 
+			int endMatcherPos = 0;
+
 	        while (matcher.find()) {
+				//Token não reconhecido no começo da String, ou antes da ocorrência de um Token reconhedido
+				if (matcher.start() - endMatcherPos > 1 ){
+					String notFoundChar = codigoFonte.substring(endMatcherPos, matcher.start()).trim();
+					String[] splitedChar = notFoundChar.split("\\s+");
+					for (String s: splitedChar){
+						System.out.println("Caractere nao reconhecido: " + s);
+					}
+				}
+				//Tokens reconhecidos
 	            String valor = matcher.group().trim(); // Remover espaços em branco
+
 	            Token token = identificarToken(valor);
 	            if (token != null) {
 	                tokens.add(token);
 	            }
-	        }
 
+				endMatcherPos = matcher.end();
+	        }
+			//Tokens não reconhecidos após a ocorrência do último Token reconhecido
+			if (endMatcherPos < codigoFonte.length()) {
+				String notFoundChar = codigoFonte.substring(endMatcherPos, codigoFonte.length() - 1).trim();
+				String[] splitedChar = notFoundChar.split("\\s+");
+				for (String s: splitedChar){
+					System.out.println("Caractere nao reconhecido: " + s);
+				}
+			}
 	        return tokens;
 	    }
 
@@ -55,7 +76,7 @@ public class analiseLexica {
 	        } 
 	        // Ignorar comentários
 	        else if (valor.matches(PADRAO_COMENTARIO_LINHA) || valor.matches(PADRAO_COMENTARIO_BLOCO)) {
-	            return null;
+				return null;
 	        } 
 	        // Verificar se é uma string
 	        else if (valor.matches(PADRAO_STRING)) {
