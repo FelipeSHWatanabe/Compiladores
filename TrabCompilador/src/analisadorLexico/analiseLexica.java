@@ -44,13 +44,24 @@ public class analiseLexica {
 					String notFoundChar = codigoFonte.substring(endMatcherPos, matcher.start()).trim();
 					String[] splitedChar = notFoundChar.split("\\s+");
 					for (String s: splitedChar){
-						System.out.println("Caractere nao reconhecido: " + s);
+						Token tokenAntes = identificarToken(s);
+						if (tokenAntes != null) {
+							tokens.add(tokenAntes);
+						}
 					}
+				}
+				//Caso especial quando o Token reconhecido comeca exatamente no segundo caractere da String
+				else if (endMatcherPos == 0 && matcher.start() == 1){
+					String notFoundChar = codigoFonte.substring(endMatcherPos, matcher.start()).trim();
+					Token tokenAntes = identificarToken(notFoundChar);
+						if (tokenAntes != null) {
+							tokens.add(tokenAntes);
+						}
 				}
 				//Tokens reconhecidos
 	            String valor = matcher.group().trim(); // Remover espaços em branco
-
 	            Token token = identificarToken(valor);
+
 	            if (token != null) {
 	                tokens.add(token);
 	            }
@@ -62,7 +73,10 @@ public class analiseLexica {
 				String notFoundChar = codigoFonte.substring(endMatcherPos, codigoFonte.length() - 1).trim();
 				String[] splitedChar = notFoundChar.split("\\s+");
 				for (String s: splitedChar){
-					System.out.println("Caractere nao reconhecido: " + s);
+					Token tokenDepois = identificarToken(s);
+						if (tokenDepois != null) {
+							tokens.add(tokenDepois);
+						}
 				}
 			}
 	        return tokens;
