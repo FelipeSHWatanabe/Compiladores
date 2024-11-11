@@ -1,7 +1,7 @@
 package analisadorLexico;
 
 public enum TokenType {
-	IDENTIFICADOR,
+    IDENTIFICADOR,
     NUMERO,
     OPERADOR,
     PONTUACAO,
