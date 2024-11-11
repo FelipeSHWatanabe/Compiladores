@@ -17,7 +17,7 @@ public class analiseLexica {
         private static final String PADRAO_PALAVRA_CHAVE = "(round|int|float|double|char|troll|bang|molotov|smoke|rush|baiter|baita|backup|antrush|setup)"; // Palavras-chave
 
         private static final String PADRAO_PARAR_NUMERO_INICIO = "\\d+[a-zA-Z0-9_]+"; //Teste para parar identificadores iniciados por NÚMEROS
-        private static final String PADRAO_SINAL_IGUAL = "(\\s)+(=)(\\s)+";
+        // private static final String PADRAO_SINAL_IGUAL = "(\\s)+(=)(\\s)+";
 
 
         private String codigoFonte;
@@ -36,7 +36,7 @@ public class analiseLexica {
 
                     //ADIÇÃO PARA IDENTIFICADORES INICIADOS POR NUMEROS
                     PADRAO_PARAR_NUMERO_INICIO + "|" +
-                    PADRAO_SINAL_IGUAL + "|" +
+                    // PADRAO_SINAL_IGUAL + "|" +
 
                     PADRAO_NUMERO + "|" +
                     PADRAO_OPERADOR_COMPARACAO + "|" +
@@ -48,7 +48,6 @@ public class analiseLexica {
             int endMatcherPos = 0;
 
             while (matcher.find()) {
-                System.out.println(matcher.start() + " comeco " + matcher.end() + " fim");
                 //Token não reconhecido no começo da String, ou antes da ocorrência de um Token reconhedido
                 if (matcher.start() - endMatcherPos > 1 ){
                     String notFoundChar = codigoFonte.substring(endMatcherPos, matcher.start()).trim();
@@ -115,9 +114,11 @@ public class analiseLexica {
 
             //ADIÇÃO DE SINAL DE IGUAL
 
+            /* 
             else if(valor.matches("=")){
                 return new Token(TokenType.ATRIBUICAO, valor);
             }
+            */
 
             // Verificar se é um número (inteiro ou flutuante)
             else if (valor.matches(PADRAO_NUMERO)) {
