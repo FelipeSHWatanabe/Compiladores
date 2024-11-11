@@ -7,5 +7,6 @@ public enum TokenType {
     PONTUACAO,
     PALAVRA_CHAVE,
     ERRO,
-    STRING;
+    STRING,
+    ATRIBUICAO;
 }
