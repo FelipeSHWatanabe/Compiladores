@@ -16,8 +16,8 @@ public class analiseLexica {
         private static final String PADRAO_PONTUACAO = "[;,\\(\\)\\[\\]\\{\\}]"; // Pontuação
         private static final String PADRAO_PALAVRA_CHAVE = "(round|int|float|double|char|troll|bang|molotov|smoke|rush|baiter|baita|backup|antrush|setup)"; // Palavras-chave
 
-        private static final String PADRAO_PARAR_NUMERO_INICIO = "\\d+[a-zA-Z0-9_]+"; //Teste para parar identificadores iniciados por NÚMEROS
-        private static final String PADRAO_SINAL_IGUAL = "(\\s)+(=)(\\s)+";
+        private static final String PADRAO_PARAR_NUMERO_INICIO = "\\d+[a-zA-Z_]+"; //Teste para parar identificadores iniciados por NÚMEROS
+        private static final String PADRAO_SINAL_IGUAL = "(=)";
 
 
         private String codigoFonte;
@@ -36,10 +36,12 @@ public class analiseLexica {
 
                     //ADIÇÃO PARA IDENTIFICADORES INICIADOS POR NUMEROS
                     PADRAO_PARAR_NUMERO_INICIO + "|" +
-                    PADRAO_SINAL_IGUAL + "|" +
 
                     PADRAO_NUMERO + "|" +
                     PADRAO_OPERADOR_COMPARACAO + "|" +
+                    
+                    PADRAO_SINAL_IGUAL + "|" +
+
                     PADRAO_OPERADOR + "|" +
                     PADRAO_PONTUACAO + "|" +
                     PADRAO_PALAVRA_CHAVE);
@@ -112,12 +114,6 @@ public class analiseLexica {
                 return new Token(TokenType.ERRO, valor);
             }
 
-            //ADIÇÃO DE SINAL DE IGUAL
- 
-            else if(valor.matches("=")){
-                return new Token(TokenType.ATRIBUICAO, valor);
-            }
-
             // Verificar se é um número (inteiro ou flutuante)
             else if (valor.matches(PADRAO_NUMERO)) {
                 return new Token(TokenType.NUMERO, valor);
@@ -126,6 +122,13 @@ public class analiseLexica {
             else if (valor.matches(PADRAO_OPERADOR_COMPARACAO)) {
                 return new Token(TokenType.OPERADOR, valor);
             } 
+            
+            //ADIÇÃO DE SINAL DE IGUAL
+ 
+            else if(valor.matches(PADRAO_SINAL_IGUAL)){
+                return new Token(TokenType.ATRIBUICAO, valor);
+            }
+
             // Verificar outros operadores
             else if (valor.matches(PADRAO_OPERADOR)) {
                 return new Token(TokenType.OPERADOR, valor);
