@@ -45,6 +45,9 @@ public class analiseLexica {
                     PADRAO_OPERADOR + "|" +
                     PADRAO_PONTUACAO + "|" +
                     PADRAO_PALAVRA_CHAVE);
+
+            codigoFonte = codigoFonte.replaceAll("\\t+","");
+            
             Matcher matcher = pattern.matcher(codigoFonte);
 
             int endMatcherPos = 0;
